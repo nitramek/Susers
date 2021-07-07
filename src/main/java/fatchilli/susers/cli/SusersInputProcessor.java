@@ -10,6 +10,9 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import fatchilli.susers.AppLifecycleListener;
 import fatchilli.susers.SystemException;
@@ -19,14 +22,17 @@ public class SusersInputProcessor implements AppLifecycleListener {
 
     private final BufferedReader reader;
     private final BufferedWriter writer;
+    private final ExecutorService executor;
 
     public SusersInputProcessor(InputStream inputStream, OutputStream outputStream, List<Command> commands) {
         this.reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
         this.writer = new BufferedWriter(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8));
+        executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         this.commands = commands;
+
     }
 
-    private void processLine(String line) throws IOException {
+    private void processLine(String line) {
         final Optional<Command> foundCommand = commands.stream()
                 .filter(command -> command.doesAcceptLine(line))
                 .findFirst();
@@ -39,10 +45,13 @@ public class SusersInputProcessor implements AppLifecycleListener {
     }
 
     private void writeLine(String msg) {
-        try {
-            writer.write(msg + "\n");
-        } catch (IOException e) {
-            throw new SystemException("Error writing", e);
+        synchronized (this) {
+            try {
+                writer.write(msg + "\n");
+                writer.flush();
+            } catch (IOException e) {
+                throw new SystemException("Error writing", e);
+            }
         }
     }
 
@@ -54,8 +63,7 @@ public class SusersInputProcessor implements AppLifecycleListener {
                 if (line == null) {
                     return;
                 }
-                processLine(line);
-                writer.flush();
+                executor.submit(() -> processLine(line));
             } while (true);
         } catch (IOException e) {
             throw new SystemException("Error reading input", e);
@@ -64,6 +72,11 @@ public class SusersInputProcessor implements AppLifecycleListener {
 
     @Override
     public void onFinish() {
-
+        try {
+            executor.shutdown();
+            executor.awaitTermination(200, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            throw new SystemException("Error shutting down executor", e);
+        }
     }
 }
