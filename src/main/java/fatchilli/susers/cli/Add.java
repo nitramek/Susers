@@ -27,7 +27,7 @@ public class Add implements Command {
     public String processLine(String line) {
         final Matcher matcher = ADD_PATTERN.matcher(line);
         if (!matcher.matches()) {
-            throw new CommandParseException(COMMAND_NAME, "Add (1, \"a1\", \"Robert\")");
+            throw new CommandParseException(line, COMMAND_NAME, "Add (1, \"a1\", \"Robert\")");
         }
 
         final String firstArg = matcher.group(1);

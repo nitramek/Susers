@@ -6,14 +6,14 @@ import fatchilli.susers.cli.Add;
 import fatchilli.susers.cli.DeleteAll;
 import fatchilli.susers.cli.PrintAll;
 import fatchilli.susers.cli.SusersInputProcessor;
-import fatchilli.susers.susers.SuserDao;
+import fatchilli.susers.susers.SuserDaoImpl;
 
 public class Susers {
 
     public static void main(String[] args) {
         final DatabaseSetup databaseSetup = new DatabaseSetup();
 
-        final SuserDao dao = new SuserDao(databaseSetup);
+        final SuserDaoImpl dao = new SuserDaoImpl(databaseSetup);
         final List<AppLifecycleListener> databaseSetups = List.of(databaseSetup,
                 new SusersInputProcessor(System.in, System.out,
                         List.of(new Add(dao), new PrintAll(dao), new DeleteAll(dao))));

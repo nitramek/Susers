@@ -1,0 +1,7 @@
+Add (1,"a1","Robert")
+Add (2, "a2", "Martin")
+Add (4, "a2",          "Potato")
+Add (4,     "",  "")
+Add (5,"","Empty")
+Add (6,"'hi'","Empty")
+Add (6,"/👌","Empty")

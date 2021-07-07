@@ -1,0 +1,7 @@
+Resulting users[0] = Suser(userId=1, guid=a1, username=Robert)
+Resulting users[1] = Suser(userId=2, guid=a2, username=Martin)
+Resulting users[2] = Suser(userId=4, guid=a2, username=Potato)
+Resulting users[3] = Suser(userId=4, guid=, username=)
+Resulting users[4] = Suser(userId=5, guid=, username=Empty)
+Resulting users[5] = Suser(userId=6, guid='hi', username=Empty)
+Resulting users[6] = Suser(userId=6, guid=/👌, username=Empty)
