@@ -27,6 +27,7 @@ public class DatabaseSetup implements AppLifecycleListener, Database {
             throw new SystemException("Couldn't find file with db information?", e);
         }
         try {
+            //normally datasource would be taken from JNDI or similar mechanism
             dataSource = JDBCDataSourceFactory.createDataSource(properties);
         } catch (Exception e) {
             throw new SystemException("DataSource couldn't be established", e);

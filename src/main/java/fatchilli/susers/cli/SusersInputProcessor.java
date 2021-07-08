@@ -25,9 +25,10 @@ public class SusersInputProcessor implements AppLifecycleListener {
     private final ExecutorService executor;
 
     public SusersInputProcessor(InputStream inputStream, OutputStream outputStream, List<Command> commands) {
+        //could be argued all of these should be given via constructor,
         this.reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
         this.writer = new BufferedWriter(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8));
-        executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         this.commands = commands;
 
     }
@@ -45,6 +46,7 @@ public class SusersInputProcessor implements AppLifecycleListener {
     }
 
     private void writeLine(String msg) {
+        //could use CompletetableFuture to write only in single dedicated thread but this works just fine
         synchronized (this) {
             try {
                 writer.write(msg + "\n");

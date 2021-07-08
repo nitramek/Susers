@@ -1,13 +1,13 @@
 package fatchilli.susers.cli;
 
-import fatchilli.susers.susers.SuserDaoImpl;
+import fatchilli.susers.susers.SuserDao;
 
 public class DeleteAll implements Command {
 
     public static final String COMMAND_NAME = "DeleteAll";
-    private final SuserDaoImpl suserDao;
+    private final SuserDao suserDao;
 
-    public DeleteAll(SuserDaoImpl suserDao) {
+    public DeleteAll(SuserDao suserDao) {
         this.suserDao = suserDao;
     }
 

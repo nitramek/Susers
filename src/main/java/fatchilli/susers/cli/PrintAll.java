@@ -1,12 +1,12 @@
 package fatchilli.susers.cli;
 
-import fatchilli.susers.susers.SuserDaoImpl;
+import fatchilli.susers.susers.SuserDao;
 
 public class PrintAll implements Command {
 
-    private final SuserDaoImpl suserDao;
+    private final SuserDao suserDao;
 
-    public PrintAll(SuserDaoImpl suserDao) {
+    public PrintAll(SuserDao suserDao) {
         this.suserDao = suserDao;
     }
 
